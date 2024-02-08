@@ -1,0 +1,16 @@
+{
+  "name": "posts",
+  "version": "0.1.0",
+  "scripts": {
+    "lint": "textlint ./**/*.md || markdownlint-cli2 ./**/*.md",
+    "lint:fix": "textlint --fix ./**/*.md || markdownlint-cli2 --fix ./**/*.md",
+    "dev": "zenn preview"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.12.1",
+    "textlint": "^13.4.1",
+    "textlint-rule-preset-ja-technical-writing": "^10.0.1",
+    "textlint-rule-prh": "^5.3.0",
+    "zenn-cli": "^0.1.151"
+  }
+}
