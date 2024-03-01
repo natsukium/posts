@@ -1,0 +1,5 @@
+{
+  // allow bare urls
+  // zenn does not expand OGPs when wrapped in `<>`
+  "MD034": false
+}
