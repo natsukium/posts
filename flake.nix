@@ -29,7 +29,7 @@
               version = "0.1.0";
               src = ./.;
 
-              npmDepsHash = "sha256-j0Se4hBOOdWfT3Mr0CLhBofgW+Byp/hhSEvnCyxMgd8=";
+              npmDepsHash = "sha256-zKBuGPWggwOVgHkIhSrrlPxMCFlBeawOH3G/lMUDgWI=";
 
               dontNpmBuild = true;
 
@@ -38,8 +38,6 @@
 
                 mkdir -p $out/{bin,node_modules}
                 cp -r node_modules $out
-                ln -s $out/node_modules/markdownlint-cli2/markdownlint-cli2.js $out/bin/markdownlint-cli2
-                ln -s $out/node_modules/textlint/bin/textlint.js $out/bin/textlint
                 ln -s $out/node_modules/zenn-cli/dist/server/zenn.js $out/bin/zenn
 
                 runHook postInstall
@@ -65,19 +63,24 @@
               };
               prh = {
                 rulePaths = [
-                  "${deps}/node_modules/prh/prh-rules/media/WEB+DB_PRESS.yml"
-                  "${deps}/node_modules/prh/prh-rules/media/techbooster.yml"
-                  "./prh.yaml"
+                  "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/WEB+DB_PRESS.yml"
+                  "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/techbooster.yml"
                 ];
               };
             };
           };
         in
         pkgs.mkShell {
-          packages = [
-            pkgs.nodejs
-            deps
-          ];
+          packages =
+            (with pkgs; [
+              nodejs
+              markdownlint-cli2
+              (textlint.withPackages [
+                textlint-rule-preset-ja-technical-writing
+                textlint-rule-prh
+              ])
+            ])
+            ++ [ deps ];
 
           shellHook = ''
             unlink .textlintrc
